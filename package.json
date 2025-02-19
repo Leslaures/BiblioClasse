@@ -10,7 +10,10 @@
     "type": "git",
     "url": "git+https://github.com/{{ org }}/laure.git"
   },
-  "workspaces": ["client", "server"],
+  "workspaces": [
+    "client",
+    "server"
+  ],
   "scripts": {
     "build": "npm run build --workspaces --if-present",
     "check": "biome check --error-on-warnings --no-errors-on-unmatched --staged . && npm run check-types --workspaces --if-present",
@@ -20,7 +23,6 @@
     "dev": "concurrently -c green,yellow -t \"HH:mm:ss\" -p \"{name} {time}\" \"npm:dev:*\"",
     "dev:client": "npm run dev --workspace=client",
     "dev:server": "npm run dev --workspace=server",
-    "prepare": "husky || true",
     "start": "npm run start --workspace=server",
     "test": "npm run test --workspaces --if-present"
   },
