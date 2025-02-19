@@ -7,7 +7,7 @@
     "db:migrate": "tsx ./bin/migrate",
     "db:seed": "tsx ./bin/seed",
     "build": "tsc",
-    "start": "node dist/index.js",
+    "start": "node api/index.ts",
     "test": "jest --verbose",
     "preview": "npm run start"
   },
