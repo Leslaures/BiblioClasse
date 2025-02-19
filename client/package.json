@@ -6,7 +6,8 @@
     "dev": "vite --host",
     "build": "vite build",
     "start": "vite preview",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "preinstall": "command -v husky && husky install || true"
   },
   "dependencies": {
     "@zxing/library": "^0.21.3",
