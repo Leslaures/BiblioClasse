@@ -1,6 +1,7 @@
 {
   "name": "@js-monorepo/server",
   "main": "dist/index.js",
+  "type": "module",
   "scripts": {
     "check-types": "tsc --noEmit",
     "dev": "tsx watch --clear-screen=false ./api/index.ts",
