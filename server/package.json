@@ -1,14 +1,13 @@
 {
   "name": "@js-monorepo/server",
   "main": "dist/index.js",
-  "type": "module",
   "scripts": {
     "check-types": "tsc --noEmit",
     "dev": "tsx watch --clear-screen=false ./api/index.ts",
     "db:migrate": "tsx ./bin/migrate",
     "db:seed": "tsx ./bin/seed",
     "build": "tsc",
-    "start": "node api/index.ts",
+    "start": "npm run build && node dist/api/index.js",
     "test": "jest --verbose",
     "preview": "npm run start"
   },
