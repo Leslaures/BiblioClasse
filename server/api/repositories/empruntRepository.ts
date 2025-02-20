@@ -1,5 +1,5 @@
-import databaseClient from "../../database/client";
-import type { Result, Rows } from "../../database/client";
+import db from "../../database/db";
+import type { Result, Rows } from "../../database/db";
 
 interface Emprunt {
   date_emprunt: string;
@@ -12,7 +12,7 @@ interface Emprunt {
 
 class EmpruntRepository {
   async create(userId: number, emprunt: Omit<Emprunt, "id_emprunt">) {
-    const [result] = await databaseClient.query<Result>(
+    const [result] = await db.query<Result>(
       `
     INSERT INTO emprunt (date_emprunt, date_retour, date_retour_effectif, id_exemplaire, id_eleve, user_id) 
     VALUES (?, ?, ?, ?, ?, ?)
@@ -30,7 +30,7 @@ class EmpruntRepository {
   }
 
   async read(userId: number, id_emprunt: number) {
-    const [rows] = await databaseClient.query<Rows>(
+    const [rows] = await db.query<Rows>(
       `
     SELECT * 
     FROM emprunt 
@@ -42,7 +42,7 @@ class EmpruntRepository {
   }
 
   async readAll(userId: number) {
-    const [rows] = await databaseClient.query<Rows>(
+    const [rows] = await db.query<Rows>(
       `
     SELECT * 
     FROM emprunt 
@@ -54,7 +54,7 @@ class EmpruntRepository {
   }
 
   async update(userId: number, id_emprunt: number, emprunt: Emprunt) {
-    await databaseClient.query(
+    await db.query(
       `
     UPDATE emprunt 
     SET date_emprunt = ?, date_retour = ?, date_retour_effectif = ?, id_exemplaire = ?, id_eleve = ? 
@@ -79,7 +79,7 @@ class EmpruntRepository {
     id_exemplaire: number,
     id_eleve: number,
   ) {
-    const [rows] = await databaseClient.query<Rows>(
+    const [rows] = await db.query<Rows>(
       `
     UPDATE emprunt 
     SET date_retour_effectif = ? 
@@ -94,7 +94,7 @@ class EmpruntRepository {
   }
 
   async delete(userId: number, id_emprunt: number) {
-    await databaseClient.query(
+    await db.query(
       `
     DELETE FROM emprunt 
     WHERE user_id = ? AND id_emprunt = ?
@@ -104,7 +104,7 @@ class EmpruntRepository {
   }
 
   async countStudentsWithLoansInProgress(userId: number) {
-    const [rows] = await databaseClient.query<Rows>(
+    const [rows] = await db.query<Rows>(
       `
     SELECT COUNT(DISTINCT id_eleve) AS nb_eleves_emprunt_en_cours 
     FROM emprunt 
@@ -115,7 +115,7 @@ class EmpruntRepository {
     return rows[0].nb_eleves_emprunt_en_cours;
   }
   async countStudentsWithLoansDueSoon(userId: number) {
-    const [rows] = await databaseClient.query<Rows>(
+    const [rows] = await db.query<Rows>(
       `
     SELECT COUNT(DISTINCT id_eleve) AS nb_eleves_a_rendre_dans_7_jours 
     FROM emprunt 
@@ -128,7 +128,7 @@ class EmpruntRepository {
     return rows[0].nb_eleves_a_rendre_dans_7_jours;
   }
   async countStudentsWithOverdueLoans(userId: number) {
-    const [rows] = await databaseClient.query<Rows>(
+    const [rows] = await db.query<Rows>(
       `
     SELECT COUNT(DISTINCT id_eleve) AS nb_eleves_en_retard 
     FROM emprunt 
@@ -142,7 +142,7 @@ class EmpruntRepository {
   }
 
   async LoansInProgress(userId: number) {
-    const [rows] = await databaseClient.query<Rows>(
+    const [rows] = await db.query<Rows>(
       `
     SELECT SUM(CASE WHEN date_retour_effectif IS NULL THEN 1 ELSE 0 END) AS inProgress 
     FROM emprunt 
@@ -154,7 +154,7 @@ class EmpruntRepository {
   }
 
   async getEmpruntsByEleve(userId: number, id_eleve: number) {
-    const [rows] = await databaseClient.query(
+    const [rows] = await db.query(
       `
     SELECT 
       e.id_exemplaire, 

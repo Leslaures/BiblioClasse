@@ -1,5 +1,5 @@
-import databaseClient from "../../database/client";
-import type { Rows } from "../../database/client";
+import db from "../../database/db";
+import type { Rows } from "../../database/db";
 
 class parametreRepository {
   async insertDefaultParametre(
@@ -7,7 +7,7 @@ class parametreRepository {
     loanDuration: number,
     borrowLimit: number,
   ) {
-    await databaseClient.query(
+    await db.query(
       `
       INSERT INTO parametre (user_id, loanDuration, borrowLimit) 
       VALUES (?, ?, ?)
@@ -17,7 +17,7 @@ class parametreRepository {
   }
 
   async changeLoanDuration(userId: number, loanDuration: string) {
-    await databaseClient.query(
+    await db.query(
       `
     UPDATE parametre 
     SET loanDuration = ? 
@@ -28,7 +28,7 @@ class parametreRepository {
   }
 
   async getLoanDuration(userId: number) {
-    const [rows] = await databaseClient.query<Rows>(
+    const [rows] = await db.query<Rows>(
       `
     SELECT loanDuration 
     FROM parametre 
@@ -43,7 +43,7 @@ class parametreRepository {
   }
 
   async changeBorrowLimit(userId: number, borrowLimit: string) {
-    await databaseClient.query(
+    await db.query(
       `
     UPDATE parametre 
     SET borrowLimit = ? 
@@ -53,7 +53,7 @@ class parametreRepository {
     );
   }
   async getBorrowLimit(userId: number) {
-    const [rows] = await databaseClient.query<Rows>(
+    const [rows] = await db.query<Rows>(
       `
     SELECT borrowLimit 
     FROM parametre 

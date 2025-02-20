@@ -1,5 +1,5 @@
-import databaseClient from "../../database/client";
-import type { Rows } from "../../database/client";
+import db from "../../database/db";
+import type { Rows } from "../../database/db";
 
 type Livre = {
   ISBN13: string;
@@ -21,7 +21,7 @@ type TopBooks = {
 class livreRepository {
   // The C of CRUD - Create operation
   async create(userId: number, livre: Livre) {
-    const [result] = await databaseClient.query(
+    const [result] = await db.query(
       `INSERT INTO livre (ISBN13, ISBN10, titre, auteur, couverture_img, livre_resume, user_id) 
        VALUES (?, ?, ?, ?, ?, ?, ?)`,
       [
@@ -43,7 +43,7 @@ class livreRepository {
 
   // The Rs of CRUD - Read operations
   async read(userId: number, ISBN13: string) {
-    const [rows] = await databaseClient.query<Rows>(
+    const [rows] = await db.query<Rows>(
       `
     SELECT * 
     FROM livre 
@@ -56,7 +56,7 @@ class livreRepository {
   }
 
   async readAll(userId: number) {
-    const [rows] = await databaseClient.query<Rows>(
+    const [rows] = await db.query<Rows>(
       `
     SELECT * 
     FROM livre 
@@ -68,7 +68,7 @@ class livreRepository {
   }
 
   async readAllWithExemplaires(userId: number) {
-    const [rows] = await databaseClient.query<Rows>(
+    const [rows] = await db.query<Rows>(
       `SELECT 
       l.ISBN13,
       l.titre,
@@ -91,7 +91,7 @@ class livreRepository {
   }
 
   async getTopBooks(userId: number) {
-    const [rows] = await databaseClient.query<Rows>(
+    const [rows] = await db.query<Rows>(
       `
     SELECT 
       l.ISBN13, 
@@ -120,7 +120,7 @@ class livreRepository {
 
   // The U of CRUD - Update operation
   async update(userId: number, ISBN13: string, livre: Livre) {
-    await databaseClient.query(
+    await db.query(
       `
     UPDATE livre 
     SET titre = ?, auteur = ?, couverture_img = ?, livre_resume = ? 
@@ -140,7 +140,7 @@ class livreRepository {
 
   // The D of CRUD - Delete operation
   async delete(userId: number, ISBN13: string) {
-    await databaseClient.query(
+    await db.query(
       `
     DELETE FROM livre 
     WHERE user_id = ? AND ISBN13 = ?
@@ -150,7 +150,7 @@ class livreRepository {
   }
 
   async search(userId: number, searchTerm: string) {
-    const [rows] = await databaseClient.query(
+    const [rows] = await db.query(
       `
     SELECT * 
     FROM livre 

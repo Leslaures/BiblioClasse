@@ -1,5 +1,5 @@
-import databaseClient from "../../database/client";
-import type { Result, Rows } from "../../database/client";
+import db from "../../database/db";
+import type { Result, Rows } from "../../database/db";
 
 type Eleve = {
   nom: string;
@@ -12,7 +12,7 @@ class eleveRepository {
     nom: string,
     prenom: string,
   ): Promise<{ insertId: number }> {
-    const [result] = await databaseClient.query<Result>(
+    const [result] = await db.query<Result>(
       `
       INSERT INTO eleve (nom, prenom, user_id) 
       VALUES (?, ?, ?)
@@ -22,8 +22,8 @@ class eleveRepository {
     return { insertId: result.insertId };
   }
 
-  async read(userId: number, id_eleve: string) {
-    const [rows] = await databaseClient.query<Rows>(
+  async read(userId: number, id_eleve: string): Promise<Eleve> {
+    const [rows] = await db.query<Rows>(
       `
     SELECT * 
     FROM eleve 
@@ -35,7 +35,7 @@ class eleveRepository {
     return rows[0] as Eleve;
   }
   async readAll(userId: number) {
-    const [rows] = await databaseClient.query<Rows>(
+    const [rows] = await db.query<Rows>(
       `SELECT 
         e.id_eleve, 
         e.prenom, 
@@ -61,7 +61,7 @@ class eleveRepository {
 
   /*Student avec nbOfBooksBorrowed et date_retour*/
   async readAllStudentsWithBorrowsInProgress(userId: number) {
-    const [rows] = await databaseClient.query<Rows>(
+    const [rows] = await db.query<Rows>(
       `
   SELECT 
     e.id_eleve, 
@@ -90,7 +90,7 @@ class eleveRepository {
 
   /*Student avec nbOfBooksBorrowed et date_retour*/
   async readAllStudentsWithBorrowsInformation(userId: number) {
-    const [rows] = await databaseClient.query<Rows>(
+    const [rows] = await db.query<Rows>(
       `
   SELECT 
     e.id_eleve, 
@@ -121,7 +121,7 @@ class eleveRepository {
   }
 
   async update(userId: number, id_eleve: string, eleve: Eleve) {
-    await databaseClient.query(
+    await db.query(
       `
     UPDATE eleve 
     SET nom = ?, prenom = ? 
@@ -132,7 +132,7 @@ class eleveRepository {
   }
 
   async delete(userId: number, id_eleve: string) {
-    await databaseClient.query(
+    await db.query(
       `
     DELETE FROM eleve 
     WHERE user_id = ? AND id_eleve = ?
@@ -142,7 +142,7 @@ class eleveRepository {
   }
 
   async search(userId: number, searchTerm: string) {
-    const [rows] = await databaseClient.query(
+    const [rows] = await db.query(
       `
     SELECT * 
     FROM eleve 

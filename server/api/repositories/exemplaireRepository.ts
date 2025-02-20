@@ -1,5 +1,5 @@
-import databaseClient from "../../database/client";
-import type { Result, Rows } from "../../database/client";
+import db from "../../database/db";
+import type { Result, Rows } from "../../database/db";
 
 type Exemplaire = {
   id_exemplaire?: number;
@@ -17,7 +17,7 @@ type borrowedExemplaireByISBN13 = {
 
 class ExemplaireRepository {
   async create(userId: number, exemplaire: Exemplaire) {
-    const [result] = await databaseClient.query<Result>(
+    const [result] = await db.query<Result>(
       `
     INSERT INTO exemplaire (ISBN13, isAvailable, user_id) 
     VALUES (?, ?, ?)
@@ -28,7 +28,7 @@ class ExemplaireRepository {
   }
 
   async read(userId: number, id_exemplaire: number) {
-    const [rows] = await databaseClient.query<Rows>(
+    const [rows] = await db.query<Rows>(
       `
     SELECT * 
     FROM exemplaire 
@@ -40,7 +40,7 @@ class ExemplaireRepository {
   }
 
   async readAll(userId: number) {
-    const [rows] = await databaseClient.query<Rows>(
+    const [rows] = await db.query<Rows>(
       `
     SELECT * 
     FROM exemplaire 
@@ -54,7 +54,7 @@ class ExemplaireRepository {
     userId: number,
     ISBN13: string,
   ): Promise<Array<Exemplaire>> {
-    const [rows] = await databaseClient.query<Rows>(
+    const [rows] = await db.query<Rows>(
       `
     SELECT * 
     FROM exemplaire 
@@ -66,7 +66,7 @@ class ExemplaireRepository {
   }
 
   async readAvailableExemplaire(userId: number) {
-    const [rows] = await databaseClient.query<Rows>(
+    const [rows] = await db.query<Rows>(
       `
     SELECT 
       l.titre, 
@@ -92,7 +92,7 @@ class ExemplaireRepository {
     userId: number,
     ISBN13: string,
   ): Promise<Array<borrowedExemplaireByISBN13>> {
-    const [rows] = await databaseClient.query<Rows>(
+    const [rows] = await db.query<Rows>(
       `
     SELECT 
       el.nom, 
@@ -126,7 +126,7 @@ class ExemplaireRepository {
   }
 
   async update(exemplaire: Exemplaire, userId: number, id_exemplaire: number) {
-    await databaseClient.query(
+    await db.query(
       `
     UPDATE exemplaire 
     SET ISBN13 = ?, isAvailable = ? 
@@ -138,7 +138,7 @@ class ExemplaireRepository {
   }
 
   async updateAvailability(userId: number, id_exemplaire: number) {
-    await databaseClient.query(
+    await db.query(
       `
     UPDATE exemplaire 
     SET isAvailable = TRUE 
@@ -149,7 +149,7 @@ class ExemplaireRepository {
   }
 
   async delete(userId: number, id_exemplaire: number) {
-    await databaseClient.query(
+    await db.query(
       `
     DELETE FROM exemplaire 
     WHERE user_id = ? AND id_exemplaire = ?

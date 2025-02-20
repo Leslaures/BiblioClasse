@@ -17,6 +17,7 @@ const app = express();
 
 // You should NOT do that: such code uses the `cors` module to allow all origins, which can pose security issues.
 // For this pedagogical template, the CORS code allows CLIENT_URL in development mode (when process.env.CLIENT_URL is defined).
+console.info("CLIENT_URL:", process.env.CLIENT_URL);
 
 import cors from "cors";
 app.use(
