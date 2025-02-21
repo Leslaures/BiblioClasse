@@ -1,14 +1,15 @@
-import "dotenv/config";
+// import "dotenv/config";
 // import dotenv from "dotenv";
 // dotenv.config();
 import "../database/checkConnection";
 
 import app from "./app";
 
-console.info("DB_HOST:", process.env.DB_HOST); // Vérifie si DB_HOST est bien défini
-console.info("DB_PORT:", process.env.DB_PORT); // Vérifie si DB_PORT est bien défini
-console.info("DB_USER:", process.env.DB_USER); // Vérifie si DB_USER est bien défini
-console.info("DB_NAME:", process.env.DB_NAME); // Vérifie si DB_NAME est bien défini
+console.info("MYSQL_HOST:", process.env.MYSQL_HOST);
+console.info("MYSQL_PORT:", process.env.MYSQL_PORT);
+console.info("MYSQL_USER:", process.env.MYSQL_USER);
+console.info("MYSQL_PASSWORD:", process.env.MYSQL_PASSWORD);
+console.info("MYSQL_DATABASE:", process.env.MYSQL_DATABASE);
 // Get the port from the environment variables
 const port = Number.parseInt(process.env.APP_PORT ?? "3310", 10);
 
