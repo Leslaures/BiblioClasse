@@ -321,10 +321,12 @@ function BiblioClasse() {
           : exemplaire,
       ),
     );
-    setLoansInProgress((prevLoansInProgress) => [
-      ...prevLoansInProgress,
-      borrowedBook,
-    ]);
+    setLoansInProgress((prevLoansInProgress) => {
+      if (!Array.isArray(prevLoansInProgress)) {
+        return [borrowedBook];
+      }
+      return [...prevLoansInProgress, borrowedBook];
+    });
     setShowBorrowModal(false);
     setShowConfirmationLoanModal(true);
     setTimeout(() => {
@@ -390,38 +392,38 @@ function BiblioClasse() {
     navigate("/");
   };
 
-  if (showEmptyApp) {
-    return (
-      <div>
-        <Header />
-        <Menu right isOpen={menuOpen} onStateChange={handleMenuStateChange}>
-          <div className="menu-item">
-            <strong>Se déconnecter</strong>
-          </div>
-        </Menu>
-        <EmptyApp
-          onAddBookClick={handleAddBookClick}
-          onAddStudentClick={handleAddStudentClick}
-          onClose={() => setShowEmptyApp(false)}
-        />
-        {showAddBookModal && (
-          <AddBookManually
-            showModalBook={showAddBookModal}
-            handleModalBookClose={handleModalClose}
-            handleBookAdded={handleBookAdded}
-          />
-        )}
+  // if (showEmptyApp) {
+  //   return (
+  //     <div>
+  //       <Header />
+  //       <Menu right isOpen={menuOpen} onStateChange={handleMenuStateChange}>
+  //         <div className="menu-item">
+  //           <strong>Se déconnecter</strong>
+  //         </div>
+  //       </Menu>
+  //       <EmptyApp
+  //         onAddBookClick={handleAddBookClick}
+  //         onAddStudentClick={handleAddStudentClick}
+  //         onClose={() => setShowEmptyApp(false)}
+  //       />
+  //       {showAddBookModal && (
+  //         <AddBookManually
+  //           showModalBook={showAddBookModal}
+  //           handleModalBookClose={handleModalClose}
+  //           handleBookAdded={handleBookAdded}
+  //         />
+  //       )}
 
-        {showAddStudentModal && (
-          <AddStudent
-            showModal={showAddStudentModal}
-            handleModalClose={handleAddStudentModalClose}
-            handleStudentAdded={handleStudentAdded}
-          />
-        )}
-      </div>
-    );
-  }
+  //       {showAddStudentModal && (
+  //         <AddStudent
+  //           showModal={showAddStudentModal}
+  //           handleModalClose={handleAddStudentModalClose}
+  //           handleStudentAdded={handleStudentAdded}
+  //         />
+  //       )}
+  //     </div>
+  //   );
+  // }
 
   return (
     <div>

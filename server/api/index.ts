@@ -5,6 +5,10 @@ import "../database/checkConnection";
 
 import app from "./app";
 
+console.info("DB_HOST:", process.env.DB_HOST); // Vérifie si DB_HOST est bien défini
+console.info("DB_PORT:", process.env.DB_PORT); // Vérifie si DB_PORT est bien défini
+console.info("DB_USER:", process.env.DB_USER); // Vérifie si DB_USER est bien défini
+console.info("DB_NAME:", process.env.DB_NAME); // Vérifie si DB_NAME est bien défini
 // Get the port from the environment variables
 const port = Number.parseInt(process.env.APP_PORT ?? "3310", 10);
 
