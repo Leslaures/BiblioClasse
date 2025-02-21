@@ -1,6 +1,6 @@
 import "dotenv/config";
-import dotenv from "dotenv";
-dotenv.config();
+// import dotenv from "dotenv";
+// dotenv.config();
 import "../database/checkConnection";
 
 import app from "./app";
